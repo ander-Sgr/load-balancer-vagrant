@@ -7,19 +7,19 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "web_serv_1" do |web_serv_1|    
     #hostname machine
-    web_serv_1.vm.hostname = "web.serv.1"
+    web_serv_1.vm.hostname = "webServ1"
     #define the network
     web_serv_1.vm.network "private_network", ip: "192.168.100.100"
     web_serv_1.vm.network "forwarded_port", guest: 8080, host: 8081, auto_correct: true
     
-    web_serv_1.vm.provision :shell, :path => "ssh_config.sh", :run => "always"
     web_serv_1.vm.provision :shell, :path => "apache_install_config.sh", :run => "always"
     web_serv_1.vm.provision :shell, :path => "replace_index_web_serv_1.sh", :run => "always"
+    web_serv_1.vm.provision :shell, :path => "ssh_config.sh", :run => "once"
   end
 	
   config.vm.define "web_serv_2" do |web_serv_2|    
     #hostname machine
-    web_serv_2.vm.hostname = "web.serv.2"
+    web_serv_2.vm.hostname = "webServ2"
     #define the network
     web_serv_2.vm.network "private_network", ip: "192.168.100.101"
     web_serv_2.vm.network "forwarded_port", guest: 8080, host: 8082, auto_correct: true
@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "web_serv_3" do |web_serv_3|
     #hostname machine
-    web_serv_3.vm.hostname = "web.serv.3"
+    web_serv_3.vm.hostname = "webServ3"
     #define the network
     web_serv_3.vm.network "private_network", ip: "192.168.100.102"
     web_serv_3.vm.network "forwarded_port", guest: 8080, host: 8083, auto_correct: true
@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   #bastion
   config.vm.define "proxy_serv" do |proxy_serv|
     #hostname machine
-    proxy_serv.vm.hostname = "proxy.serv"
+    proxy_serv.vm.hostname = "proxyServ"
     
     #define public network
     proxy_serv.vm.network "public_network"
@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
       apt-get install -y nginx
     SHELL
 
-    proxy_serv.vm.provision "shell", path: "ngnix_install_config.sh"
+    proxy_serv.vm.provision "shell", path: "nginx_install_config.sh"
    # proxy_serv.vm.provision "shell", path: "ssh_config.sh"
   end
 
